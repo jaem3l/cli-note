@@ -1,0 +1,38 @@
+{
+    "name": "jaem3l/cli-note",
+    "description": "Tool to build CLI based presentation slide decks",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Christopher Hertel",
+            "email": "mail@christopher-hertel.de"
+        }
+    ],
+    "require": {
+        "php": "^7.4 || ^8.0",
+        "ext-mbstring": "*",
+        "stoffel/console-canvas": "@dev",
+        "stoffel/console-gradient": "@dev",
+        "stoffel/console-headline": "@dev",
+        "stoffel/console-image": "@dev",
+        "stoffel/console-sourcecode": "@dev",
+        "symfony/console": "^5.2@beta"
+    },
+    "autoload": {
+	    "psr-4": {
+            "jæm3l\\CliNote\\": "src/"
+        }
+    },
+    "replace": {
+	    "symfony/polyfill-php73": "*",
+	    "symfony/polyfill-mbstring": "*"
+    },
+    "repositories": [
+        {"type": "path", "url": "../console-canvas"},
+        {"type": "path", "url": "../console-gradient"},
+        {"type": "path", "url": "../console-headline"},
+        {"type": "path", "url": "../console-image"},
+        {"type": "path", "url": "../console-sourcecode"}
+    ]
+}
