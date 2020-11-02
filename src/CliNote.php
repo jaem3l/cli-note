@@ -36,11 +36,13 @@ class CliNote extends SingleCommandApplication
 
         $slideDeck = new SlideDeck($this->slides);
 
-        (new Cursor($output))->hide();
-        $slideDeck->start($input->getOption('start-at'));
+        $cursor = new Cursor($output);
+        $cursor->hide();
+        $slideDeck->start((int)$input->getOption('start-at'));
 
         do {
             $answer = (new QuestionHelper())->ask($input, $output, new Question(''));
+            $cursor->clearScreen();
 
             switch ($answer) {
                 case 'p':
@@ -64,7 +66,7 @@ class CliNote extends SingleCommandApplication
 
         } while ($step());
 
-        (new Cursor($output))->show();
+        $cursor->show();
 
         return 0;
     }
