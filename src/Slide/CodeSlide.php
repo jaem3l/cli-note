@@ -30,8 +30,8 @@ class CodeSlide extends Slide
         $height = $this->lines ? $this->lines : count($lines);
         $width = max(max(array_map('mb_strlen', $lines)) + 5, $this->minLineLength);
         $terminal = new Terminal();
-        $paddingX = (int)floor(($terminal->getWidth() - $width) / 2) - 2;
-        $paddingY = (int)floor(($terminal->getHeight() - $height) / 2);
+        $paddingX = (int)floor(($terminal->getWidth() - $width) / 2) - 4;
+        $paddingY = max((int)floor(($terminal->getHeight() - $height) / 2), 0);
 
         $this->getOutput()->write(str_repeat(PHP_EOL, $paddingY));
 
