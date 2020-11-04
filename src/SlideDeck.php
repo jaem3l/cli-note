@@ -24,56 +24,49 @@ class SlideDeck
         if (!array_key_exists($slideNumber, $this->slides)) {
             $message = 'Slide number %d does not exist, this deck has slides 0-%s';
 
-            throw new InvalidArgumentException(sprintf($message, $slideNumber, count($this->slides)));
+            throw new InvalidArgumentException(sprintf($message, $slideNumber, count($this->slides) - 1));
         }
 
         while (key($this->slides) !== $slideNumber) {
             next($this->slides);
         }
 
-        $this->render();
-
-        return true;
+        return $this->current();
     }
 
     public function first(): bool
     {
-        if ($result = reset($this->slides)) {
-            $this->render();
-        }
+        return $this->render(reset($this->slides));
+    }
 
-        return $result instanceof Slide;
+    public function current(): bool
+    {
+        return $this->render(current($this->slides));
     }
 
     public function previous(): bool
     {
-        if ($result = prev($this->slides)) {
-            $this->render();
-        }
-
-        return $result instanceof Slide;
+        return $this->render(prev($this->slides));
     }
 
     public function last(): bool
     {
-        if ($result = end($this->slides)) {
-            $this->render();
-        }
-
-        return $result instanceof Slide;
+        return $this->render(end($this->slides));
     }
 
     public function next(): bool
     {
-        if ($result = next($this->slides)) {
-            $this->render();
-        }
-
-        return $result instanceof Slide;
+        return $this->render(next($this->slides));
     }
 
-    private function render(): void
+    private function render($slide): bool
     {
-        current($this->slides)->render();
+        if (!$slide instanceof Slide) {
+            return false;
+        }
+        
+        $slide->render();
+        
+        return true;
     }
 }

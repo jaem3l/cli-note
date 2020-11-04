@@ -50,6 +50,10 @@ class CliNote extends SingleCommandApplication
                 case 'previous':
                     $step = static fn () => $slideDeck->previous();
                     break;
+                case 'c':
+                case 'current':
+                    $step = static fn () => $slideDeck->current();
+                    break;
                 case 'f':
                 case 'first':
                     $step = static fn () => $slideDeck->first();
