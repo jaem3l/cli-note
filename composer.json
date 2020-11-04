@@ -17,7 +17,8 @@
         "stoffel/console-headline": "@dev",
         "stoffel/console-image": "@dev",
         "stoffel/console-sourcecode": "@dev",
-        "symfony/console": "^5.2@beta"
+        "symfony/console": "^5.2@beta",
+        "symfony/process": "^5.1"
     },
     "autoload": {
 	    "psr-4": {
