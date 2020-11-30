@@ -12,28 +12,14 @@
     "require": {
         "php": "^7.4 || ^8.0",
         "ext-mbstring": "*",
-        "stoffel/console-canvas": "@dev",
-        "stoffel/console-gradient": "@dev",
-        "stoffel/console-headline": "@dev",
-        "stoffel/console-image": "@dev",
-        "stoffel/console-sourcecode": "@dev",
-        "symfony/console": "^5.2@beta",
-        "symfony/process": "^5.1"
+        "stoffel/console-canvas": "^0.1",
+        "stoffel/console-sourcecode": "^0.1",
+        "symfony/console": "^5.2",
+        "symfony/process": "^5.2"
     },
     "autoload": {
 	    "psr-4": {
             "jæm3l\\CliNote\\": "src/"
         }
-    },
-    "replace": {
-	    "symfony/polyfill-php73": "*",
-	    "symfony/polyfill-mbstring": "*"
-    },
-    "repositories": [
-        {"type": "path", "url": "../console-canvas"},
-        {"type": "path", "url": "../console-gradient"},
-        {"type": "path", "url": "../console-headline"},
-        {"type": "path", "url": "../console-image"},
-        {"type": "path", "url": "../console-sourcecode"}
-    ]
+    }
 }

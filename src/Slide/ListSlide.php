@@ -17,11 +17,12 @@ class ListSlide extends CanvasSlide
     private static string $headlineFont;
     private static string $bulletPointFont;
 
+    private string $headline;
     private array $bulletPoints;
-    private string $headline = '';
 
-    public function __construct(array $bulletPoints)
+    public function __construct(string $headline, array $bulletPoints)
     {
+        $this->headline = $headline;
         $this->bulletPoints = $bulletPoints;
     }
 
@@ -35,36 +36,32 @@ class ListSlide extends CanvasSlide
         static::$bulletPointFont = $font;
     }
 
-    public static function withHeadline(string $headline, array $bulletPoints): self
-    {
-        $listSlide = new self($bulletPoints);
-        $listSlide->headline = $headline;
-
-        return $listSlide;
-    }
-
     protected function getElements(): array
     {
-        $paddingTop = 7;
-        $offsetY = 8;
+        $paddingTop = 4;
+        $offsetY = 5;
         $elements = [];
 
         if ('' !== $this->headline) {
-            $headline = new Headline($this->headline, Fill::withColor('white'), [
+            $headline = new Headline($this->headline, Fill::withColor('#000000', '#FFFFFF', ['bold']), [
                 'font' => static::$headlineFont,
-                'justification' => Figlet::JUSTIFICATION_CENTER,
             ]);
-            $elements[] = [new Position(0, $paddingTop), $headline];
-            $paddingTop += 10;
+            $elements[] = [new Position(8, $paddingTop - 2), $headline];
+            $paddingTop += 8;
         }
 
         foreach ($this->bulletPoints as $i => $text) {
-            $bulletPoint = new Headline(sprintf('·      %s', $text), Fill::withColor('white'), [
+            $bulletPoint = new Headline(sprintf('-  %s', $text), Fill::withColor('#000000', '#FFFFFF', ['bold']), [
                 'font' => static::$bulletPointFont,
             ]);
-            $elements[] = [new Position(20, $paddingTop + $i * $offsetY), $bulletPoint];
+            $elements[] = [new Position(12, $paddingTop + $i * $offsetY), $bulletPoint];
         }
 
         return $elements;
+    }
+
+    protected function getBackground(): Fill
+    {
+        return Fill::withColor('#FFFFFF');
     }
 }

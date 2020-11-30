@@ -6,6 +6,7 @@ namespace jæm3l\CliNote\Slide;
 
 use jæm3l\CliNote\Slide;
 use Stoffel\Console\SourceCode\SourceCodeHelper;
+use Symfony\Component\Console\Color;
 use Symfony\Component\Console\Terminal;
 
 class CodeSlide extends Slide
@@ -14,13 +15,23 @@ class CodeSlide extends Slide
     private int $offset;
     private ?int $lines;
     private int $minLineLength;
+    private Color $backgroundColor;
+    private Color $borderColor;
 
-    public function __construct(string $filePath, int $offset = 0, int $lines = null, int $minLineLenght = 60)
-    {
+    public function __construct(
+        string $filePath,
+        int $offset = 0,
+        int $lines = null,
+        int $minLineLenght = 60,
+        string $backgroundColor = '#FFFFFF',
+        string $borderColor = '#999999'
+    ) {
         $this->filePath = $filePath;
         $this->offset = $offset;
         $this->lines = $lines;
         $this->minLineLength = $minLineLenght;
+        $this->backgroundColor = new Color($backgroundColor);
+        $this->borderColor = new Color($borderColor);
     }
 
     public function render(): void
@@ -28,21 +39,53 @@ class CodeSlide extends Slide
         $code = file_get_contents($this->filePath);
         $lines = explode(PHP_EOL, $code);
         $height = $this->lines ? $this->lines : count($lines);
-        $width = max(max(array_map('mb_strlen', $lines)) + 5, $this->minLineLength);
+        $width = $this->getCodeWidth($lines);
         $terminal = new Terminal();
-        $paddingX = (int)floor(($terminal->getWidth() - $width) / 2) - 4;
-        $paddingY = max((int)floor(($terminal->getHeight() - $height) / 2), 0);
+        $paddingLeft = (int)floor(($terminal->getWidth() - $width) / 2);
+        $paddingRight = (int)ceil(($terminal->getWidth() - $width) / 2);
+        $paddingTop = max((int)ceil(($terminal->getHeight() - $height) / 2), 2);
+        $paddingBottom = max((int)floor(($terminal->getHeight() - $height) / 2), 2);
 
-        $this->getOutput()->write(str_repeat(PHP_EOL, $paddingY));
-
-        $source = SourceCodeHelper::create($this->getOutput())
-            ->highlightFile($this->filePath, $this->offset, $this->lines, $width);
-
-        foreach (explode(PHP_EOL, $source) as $line) {
-            $padding = str_repeat(' ', $paddingX);
-            $this->getOutput()->write($padding.$line.$padding.PHP_EOL);
+        if ($paddingTop > 1) {
+            $this->getOutput()->write(
+                $this->backgroundColor->apply(str_repeat(str_repeat('█', $terminal->getWidth()), $paddingTop - 1))
+            );
         }
 
-        $this->getOutput()->write(str_repeat(PHP_EOL, $paddingY));
+        $this->getOutput()->writeln(
+            $this->backgroundColor->apply(str_repeat('█', max($paddingLeft - 1, 0))).
+            $this->borderColor->apply(str_repeat('█', $width + 2)).
+            $this->backgroundColor->apply(str_repeat('█', max($paddingRight - 1, 0)))
+        );
+
+        $source = SourceCodeHelper::create($this->getOutput())
+            ->highlightFile($this->filePath, $this->offset, $this->lines, $this->minLineLength);
+
+        foreach (explode(PHP_EOL, $source) as $line) {
+            $padding1 = $this->backgroundColor->apply(str_repeat('█', max($paddingLeft - 1, 0)));
+            $padding2 = $this->backgroundColor->apply(str_repeat('█', max($paddingRight - 1, 0)));
+            $border = $this->borderColor->apply('█');
+            echo $padding1.$border.$line.$border.$padding2.PHP_EOL;
+        }
+
+        $this->getOutput()->writeln(
+            $this->backgroundColor->apply(str_repeat('█', max($paddingLeft - 1, 0))).
+            $this->borderColor->apply(str_repeat('█', $width + 2)).
+            $this->backgroundColor->apply(str_repeat('█', max($paddingRight - 1, 0)))
+        );
+
+        if ($paddingBottom > 1) {
+            $this->getOutput()->write(
+                $this->backgroundColor->apply(str_repeat(str_repeat('█', $terminal->getWidth()), $paddingBottom - 1))
+            );
+        }
+    }
+
+    private function getCodeWidth(array $lines): int
+    {
+        $lineLength = max(max(array_map('mb_strlen', $lines)), $this->minLineLength);
+        $lineNumbers = mb_strlen((string)count($lines)) + 2;
+
+        return $lineLength + $lineNumbers;
     }
 }

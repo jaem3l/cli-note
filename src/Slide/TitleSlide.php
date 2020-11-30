@@ -5,78 +5,74 @@ declare(strict_types=1);
 namespace jæm3l\CliNote\Slide;
 
 use jæm3l\CliNote\Slide;
+use Laminas\Text\Figlet\Figlet;
+use Stoffel\Console\Canvas\Element\Headline;
+use Stoffel\Console\Canvas\Fill;
+use Stoffel\Console\Canvas\Position;
 use Stoffel\Console\Headline\HeadlineHelper;
 use Symfony\Component\Console\Color;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Terminal;
 
-class TitleSlide extends Slide
+class TitleSlide extends CanvasSlide
 {
-    private static string $titleFont;
-    private static string $subtitleFont;
+    private static string $defaultTitleFont;
+    private static string $defaultSubtitleFont;
 
     private string $title;
     private string $subtitle;
+    private string $titleFont;
+    private string $subtitleFont;
 
-    public function __construct(string $title, string $subtitle = '')
-    {
+    public function __construct(
+        string $title,
+        string $subtitle = '',
+        string $titleFont = null,
+        string $subtitleFont = null
+    ) {
         $this->title = $title;
         $this->subtitle = $subtitle;
+        $this->titleFont = $titleFont ?? self::$defaultTitleFont;
+        $this->subtitleFont = $subtitleFont ?? self::$defaultSubtitleFont;
     }
 
-    public static function setTitleFont(string $font): void
+    public static function setDefaultTitleFont(string $font): void
     {
-        static::$titleFont = $font;
+        static::$defaultTitleFont = $font;
     }
 
-    public static function setSubtitleFont(string $font): void
+    public static function setDefaultSubtitleFont(string $font): void
     {
-        static::$subtitleFont = $font;
+        static::$defaultSubtitleFont = $font;
     }
 
-    public function render(): void
+    protected function getBackground(): ?Fill
     {
-        $terminalHeight = (new Terminal())->getHeight();
-        $title = $this->getTitle();
+        return Fill::withColor('#FFFFFF');
+    }
 
-        if ('' === $this->subtitle) {
-            $padding = (int)ceil(($terminalHeight - $title->getHeight()) / 2);
-            $this->getOutput()->write(str_repeat(PHP_EOL, $padding));
-            $title->write();
-            $this->getOutput()->write(str_repeat(PHP_EOL, $padding));
+    protected function getElements(): array
+    {
+        $color = Fill::withColor('#000000', '#FFFFFF', ['bold']);
 
-            return;
+        if (null === $this->subtitle) {
+            return [
+                [new Position(0, 10), new Headline($this->title, $color, [
+                    'font' => $this->titleFont,
+                    'justification' => Figlet::JUSTIFICATION_CENTER,
+                ])],
+            ];
         }
 
-        $subtitle = $this->getSubtitle();
-        $padding = (int)ceil(($terminalHeight - ($title->getHeight() + $subtitle->getHeight())) / 2);
-
-        $this->getOutput()->write(str_repeat(PHP_EOL, $padding - 2));
-        $title->write();
-
-        $this->getOutput()->write(str_repeat(PHP_EOL, 8));
-        $subtitle->write();
-
-        $this->getOutput()->write(str_repeat(PHP_EOL, $padding - 6));
-    }
-
-    private function getTitle(): HeadlineHelper
-    {
-        return HeadlineHelper::create($this->getOutput())
-            ->setColor(new Color('#FFFFFF', '', ['bold']))
-            ->setFigletOptions([
-                'font' => static::$titleFont,
-            ])
-            ->setText($this->title);
-    }
-
-    private function getSubtitle(): HeadlineHelper
-    {
-        return HeadlineHelper::create($this->getOutput())
-            ->setColor(new Color('#AAAAAA'))
-            ->setFigletOptions([
-                'font' => static::$subtitleFont,
-            ])
-            ->setText($this->subtitle);
+        return [
+            [new Position(0, 10), new Headline($this->title, $color, [
+                'font' => $this->titleFont,
+                'justification' => Figlet::JUSTIFICATION_CENTER,
+            ])],
+            [new Position(0, 25), new Headline($this->subtitle, $color, [
+                'font' => $this->subtitleFont,
+                'justification' => Figlet::JUSTIFICATION_CENTER,
+            ])],
+        ];
     }
 }
