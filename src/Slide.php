@@ -12,7 +12,7 @@ abstract class Slide
 
     abstract public function render(): void;
 
-    public function setOutput(OutputInterface $output)
+    public function setOutput(OutputInterface $output): void
     {
         $this->output = $output;
     }

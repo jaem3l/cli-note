@@ -1,0 +1,69 @@
+services:
+    _defaults:
+        autoconfigure: true
+
+    Hello:
+        parent: 'TitleSlide'
+        arguments:
+            $title: 'HELLO  CLI  NOTE'
+            $subtitle: 'HELLO  CLI  BASED  PRESENTATIONS'
+    ListTitle:
+        parent: 'TitleSlide'
+        arguments:
+            $title: 'LIST  EXAMPLE'
+    List:
+        parent: 'ListSlide'
+        arguments:
+            $headline: 'LISTE  SLIDE'
+            $bulletPoints:
+                - 'WITH'
+                - 'SOME'
+                - 'BULLETPOINTS'
+    TextTitle:
+        parent: 'TitleSlide'
+        arguments:
+            $title: 'TEXT  EXAMPLE'
+    Text:
+        parent: 'TextSlide'
+        arguments:
+            $filePath: 'example/sample-text.txt'
+    ImageTitle:
+        parent: 'TitleSlide'
+        arguments:
+            $title: 'IMAGE  EXAMPLE'
+    Image:
+        parent: 'ImageSlide'
+        arguments:
+            $imagePath: 'example/elephant.jpg'
+    ProcessTitle:
+        parent: 'TitleSlide'
+        arguments:
+            $title: 'PROCESS  EXAMPLE'
+    Process:
+        parent: 'ProcessSlide'
+        arguments:
+            $title: 'ls -l'
+            $command: 'ls -l --color=always'
+    CodeTitle:
+        parent: 'TitleSlide'
+        arguments:
+            $title: 'CODE  EXAMPLE'
+    Code:
+        parent: 'CodeSlide'
+        arguments:
+            $filePath: 'cli-note'
+            $offset: 38
+            $lines: 11
+    CanvasTitle:
+        parent: 'TitleSlide'
+        arguments:
+            $title: 'CANVAS  EXAMPLE'
+    CanvasExample:
+        class: 'CanvasExampleSlide'
+        file: '%base_path%/example/CanvasExampleSlide.php'
+        tags: ['cli_note.slide']
+    HaveFun:
+        parent: 'TitleSlide'
+        arguments:
+            $title: 'HAVE  FUN'
+            $subtitle: 'POWERED  BY  JAEM3L'

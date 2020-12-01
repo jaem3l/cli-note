@@ -1,0 +1,48 @@
+parameters:
+    cli_note.list_slide.title_font: '%base_path%/vendor/laminas/laminas-text/src/Figlet/laminas-project.flf'
+    cli_note.list_slide.bulletpoint_font: '%base_path%/vendor/laminas/laminas-text/src/Figlet/laminas-project.flf'
+    cli_note.title_slide.title_font: '%base_path%/vendor/laminas/laminas-text/src/Figlet/laminas-project.flf'
+    cli_note.title_slide.subtitle_font: '%base_path%/vendor/laminas/laminas-text/src/Figlet/laminas-project.flf'
+
+services:
+
+    CliNote:
+        class: jæm3l\CliNote\CliNote
+        public: true
+        arguments:
+            $slides: !tagged 'cli_note.slide'
+
+    CodeSlide:
+        class: jæm3l\CliNote\Slide\CodeSlide
+        abstract: true
+        arguments:
+            $offset: 0
+            $lines: null
+            $minLineLength: 60
+            $backgroundColor: '#FFFFFF'
+            $borderColor: '#999999'
+    ImageSlide:
+        class: jæm3l\CliNote\Slide\ImageSlide
+        abstract: true
+    ListSlide:
+        class: jæm3l\CliNote\Slide\ListSlide
+        abstract: true
+        arguments:
+            $bulletPoints: []
+            $headlineFont: '%cli_note.list_slide.title_font%'
+            $bulletPointFont: '%cli_note.list_slide.bulletpoint_font%'
+    ProcessSlide:
+        class: jæm3l\CliNote\Slide\ProcessSlide
+        abstract: true
+        arguments:
+            $workingDirectory: '%base_path%'
+    TextSlide:
+        class: jæm3l\CliNote\Slide\TextSlide
+        abstract: true
+    TitleSlide:
+        class: jæm3l\CliNote\Slide\TitleSlide
+        abstract: true
+        arguments:
+            $subtitle: ''
+            $titleFont: '%cli_note.title_slide.title_font%'
+            $subtitleFont: '%cli_note.title_slide.subtitle_font%'

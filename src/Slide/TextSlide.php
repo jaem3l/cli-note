@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace jæm3l\CliNote\Slide;
 
 use jæm3l\CliNote\Slide;
-use Stoffel\Console\SourceCode\SourceCodeHelper;
 use Symfony\Component\Console\Terminal;
 
 class TextSlide extends Slide

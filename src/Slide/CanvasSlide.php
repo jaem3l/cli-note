@@ -6,12 +6,7 @@ namespace jæm3l\CliNote\Slide;
 
 use jæm3l\CliNote\Slide;
 use Stoffel\Console\Canvas\CanvasHelper;
-use Stoffel\Console\Canvas\Dimension;
-use Stoffel\Console\Canvas\Element\Headline;
-use Stoffel\Console\Canvas\Element\Image;
-use Stoffel\Console\Canvas\Element\Rectangle;
 use Stoffel\Console\Canvas\Fill;
-use Stoffel\Console\Canvas\Position;
 
 abstract class CanvasSlide extends Slide
 {
@@ -28,7 +23,7 @@ abstract class CanvasSlide extends Slide
     }
 
     /**
-     * Returns array of Position+Element touples.
+     * Returns array of Position+Element tuples.
      *
      * @return array
      */

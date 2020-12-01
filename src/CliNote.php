@@ -16,9 +16,9 @@ class CliNote extends SingleCommandApplication
 {
     private array $slides;
     
-    public function __construct(Slide ...$slides)
+    public function __construct(iterable $slides)
     {
-        $this->slides = $slides;
+        $this->slides = iterator_to_array($slides);
 
         parent::__construct();
     }
@@ -34,7 +34,7 @@ class CliNote extends SingleCommandApplication
             $slide->setOutput($output);
         }
 
-        $slideDeck = new SlideDeck($this->slides);
+        $slideDeck = new SlideDeck(...$this->slides);
 
         $cursor = new Cursor($output);
         $cursor->hide();

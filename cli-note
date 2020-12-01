@@ -1,0 +1,46 @@
+#!/usr/bin/env php
+<?php
+
+use jæm3l\CliNote\Slide;
+use jæm3l\CliNote\DependencyInjection\SlidePass;
+use Symfony\Component\Config\FileLocator;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\ConsoleEvents;
+use Symfony\Component\Console\DependencyInjection\AddConsoleCommandPass;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Symfony\Component\ErrorHandler\ErrorHandler;
+use Symfony\Component\EventDispatcher\DependencyInjection\RegisterListenersPass;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+
+require 'vendor/autoload.php';
+
+ErrorHandler::register();
+$container = new ContainerBuilder();
+
+// Configure console.
+$container->addCompilerPass(new AddConsoleCommandPass());
+$container->registerForAutoconfiguration(Command::class)
+    ->addTag('console.command');
+
+// Configure event dispatcher.
+$container->setParameter('event_dispatcher.event_aliases', ConsoleEvents::ALIASES);
+$container->addCompilerPass(new RegisterListenersPass());
+$container->registerForAutoconfiguration(EventSubscriberInterface::class)
+    ->addTag('kernel.event_subscriber');
+
+// Configure slides.
+$container->addCompilerPass(new SlidePass());
+$container->registerForAutoconfiguration(Slide::class)
+    ->addTag('cli_note.slide');
+
+// Load slides.yaml.
+(new YamlFileLoader($container, new FileLocator(__DIR__.'/config')))->load('services.yaml');
+(new YamlFileLoader($container, new FileLocator(getcwd())))->load('slides.yaml');
+
+$container->setParameter('base_path', getcwd());
+$container->compile();
+
+$container
+    ->get('CliNote')
+    ->run();

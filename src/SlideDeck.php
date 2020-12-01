@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace jæm3l\CliNote;
 
 use InvalidArgumentException;
-use Symfony\Component\Console\Output\OutputInterface;
 
 class SlideDeck
 {
@@ -14,8 +13,12 @@ class SlideDeck
      */
     private array $slides;
 
-    public function __construct(array $slides)
+    public function __construct(Slide ...$slides)
     {
+        if (0 === count($slides)) {
+            throw new InvalidArgumentException('Cannot instantiate an empty slide deck.');
+        }
+
         $this->slides = $slides;
     }
 

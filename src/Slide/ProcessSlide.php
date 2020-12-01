@@ -7,17 +7,18 @@ namespace jæm3l\CliNote\Slide;
 use jæm3l\CliNote\Slide;
 use Symfony\Component\Console\Color;
 use Symfony\Component\Console\Cursor;
-use Symfony\Component\Process\InputStream;
 use Symfony\Component\Process\Process;
 
 class ProcessSlide extends Slide
 {
     private string $title;
+    private string $workingDirectory;
     private string $command;
 
-    public function __construct(string $title, string $command)
+    public function __construct(string $title, string $workingDirectory, string $command)
     {
         $this->title = $title;
+        $this->workingDirectory = $workingDirectory;
         $this->command = $command;
     }
 
@@ -29,7 +30,7 @@ class ProcessSlide extends Slide
         $this->getOutput()->write((new Color('#777777'))->apply('→ your/working/directory: '));
         $this->getOutput()->writeln($this->title.PHP_EOL);
 
-        $process = Process::fromShellCommandline($this->command, null, null, null, 300);
+        $process = Process::fromShellCommandline($this->command, $this->workingDirectory, null, null, 300);
 
         $process->run(function ($type, $buffer) {
             $this->getOutput()->write($buffer);

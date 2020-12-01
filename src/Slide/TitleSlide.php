@@ -16,34 +16,17 @@ use Symfony\Component\Console\Terminal;
 
 class TitleSlide extends CanvasSlide
 {
-    private static string $defaultTitleFont;
-    private static string $defaultSubtitleFont;
-
     private string $title;
     private string $subtitle;
     private string $titleFont;
     private string $subtitleFont;
 
-    public function __construct(
-        string $title,
-        string $subtitle = '',
-        string $titleFont = null,
-        string $subtitleFont = null
-    ) {
+    public function __construct(string $title, string $subtitle, string $titleFont, string $subtitleFont)
+    {
         $this->title = $title;
         $this->subtitle = $subtitle;
-        $this->titleFont = $titleFont ?? self::$defaultTitleFont;
-        $this->subtitleFont = $subtitleFont ?? self::$defaultSubtitleFont;
-    }
-
-    public static function setDefaultTitleFont(string $font): void
-    {
-        static::$defaultTitleFont = $font;
-    }
-
-    public static function setDefaultSubtitleFont(string $font): void
-    {
-        static::$defaultSubtitleFont = $font;
+        $this->titleFont = $titleFont;
+        $this->subtitleFont = $subtitleFont;
     }
 
     protected function getBackground(): ?Fill

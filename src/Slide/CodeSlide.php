@@ -22,14 +22,14 @@ class CodeSlide extends Slide
         string $filePath,
         int $offset = 0,
         int $lines = null,
-        int $minLineLenght = 60,
+        int $minLineLength = 60,
         string $backgroundColor = '#FFFFFF',
         string $borderColor = '#999999'
     ) {
         $this->filePath = $filePath;
         $this->offset = $offset;
         $this->lines = $lines;
-        $this->minLineLength = $minLineLenght;
+        $this->minLineLength = $minLineLength;
         $this->backgroundColor = new Color($backgroundColor);
         $this->borderColor = new Color($borderColor);
     }
@@ -38,7 +38,7 @@ class CodeSlide extends Slide
     {
         $code = file_get_contents($this->filePath);
         $lines = explode(PHP_EOL, $code);
-        $height = $this->lines ? $this->lines : count($lines);
+        $height = $this->lines ?: count($lines);
         $width = $this->getCodeWidth($lines);
         $terminal = new Terminal();
         $paddingLeft = (int)floor(($terminal->getWidth() - $width) / 2);

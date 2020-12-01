@@ -15,11 +15,18 @@
         "stoffel/console-canvas": "^0.1",
         "stoffel/console-sourcecode": "^0.1",
         "symfony/console": "^5.2",
-        "symfony/process": "^5.2"
+        "symfony/process": "^5.2",
+        "symfony/event-dispatcher": "^5.2",
+        "symfony/error-handler": "^5.2",
+        "symfony/filesystem": "^5.2",
+        "symfony/dependency-injection": "^5.2",
+        "symfony/config": "^5.2",
+        "symfony/yaml": "^5.2"
     },
     "autoload": {
-	    "psr-4": {
+        "psr-4": {
             "jæm3l\\CliNote\\": "src/"
         }
-    }
+    },
+    "bin": "cli-note"
 }
