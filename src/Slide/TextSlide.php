@@ -23,7 +23,7 @@ class TextSlide extends Slide
         $height = count($lines);
         $width = max(array_map('mb_strlen', $lines));
         $terminal = new Terminal();
-        $paddingX = (int)floor(($terminal->getWidth() - $width) / 2);
+        $paddingX = max((int)floor(($terminal->getWidth() - $width) / 2), 0);
         $paddingY = max((int)floor(($terminal->getHeight() - $height) / 2), 0);
 
         $this->getOutput()->write(str_repeat(PHP_EOL, $paddingY));
